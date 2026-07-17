@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardioTrack CT-200 Documentation QA Pipeline</title>
+    <meta name="description" content="AI Engineering Assignment - Medical device manual QA traceability, version pinning and staleness detection dashboard.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #212121;
+            --panel-bg: #212121;
+            --sidebar-bg: #171717;
+            --border-color: #303030;
+            --primary-accent: #10a37f;
+            --primary-accent-hover: #0d8060;
+            --text-color: #ececec;
+            --text-muted: #b4b4b4;
+            --success-color: #10a37f;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --valid-bg: rgba(16, 163, 127, 0.1);
+            --stale-bg: rgba(245, 158, 11, 0.1);
+            --orphaned-bg: rgba(239, 68, 68, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        /* --- Layout --- */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 1rem;
+            gap: 1rem;
+        }
+
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem 2rem;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            color: var(--primary-accent);
+        }
+
+        .brand-title h1 {
+            font-size: 1.25rem;
+            letter-spacing: 0.2px;
+            color: #fff;
+        }
+
+        .brand-title span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: right;
+        }
+
+        .stat-val {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Main Content Grid --- */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr 450px;
+            gap: 1rem;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .panel-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--sidebar-bg);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .panel-title i {
+            color: var(--primary-accent);
+        }
+
+        .panel-body {
+            padding: 1rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* --- Left Panel: Tree Browser --- */
+        .version-selector-container {
+            margin-bottom: 1rem;
+        }
+
+        .form-select {
+            width: 100%;
+            background: #2f2f2f;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: #fff;
+            padding: 0.6rem 1rem;
+            outline: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-accent);
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            background: #2f2f2f;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: #fff;
+            padding: 0.6rem 1rem 0.6rem 2.2rem;
+            outline: none;
+            font-size: 0.85rem;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-accent);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* --- Tree DOM Rendering --- */
+        .tree-root {
+            list-style: none;
+        }
+
+        .tree-node {
+            margin-left: 0.5rem;
+            position: relative;
+        }
+
+        .tree-node-content {
+            display: flex;
+            align-items: center;
+            padding: 0.4rem 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            gap: 0.4rem;
+            user-select: none;
+            transition: background 0.15s;
+        }
+
+        .tree-node-content:hover {
+            background: #2f2f2f;
+        }
+
+        .tree-node-content.active {
+            background: #2f2f2f;
+            border-left: 2px solid var(--primary-accent);
+        }
+
+        .tree-node-expand-btn {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            transition: transform 0.2s;
+        }
+
+        .tree-node-expand-btn.expanded {
+            transform: rotate(90deg);
+        }
+
+        .tree-node-checkbox {
+            cursor: pointer;
+            accent-color: var(--primary-accent);
+        }
+
+        .tree-node-label {
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-color);
+        }
+
+        .tree-node-children {
+            list-style: none;
+            margin-left: 1.2rem;
+            display: none;
+        }
+
+        .tree-node-children.visible {
+            display: block;
+        }
+
+        /* --- Middle Panel: Section Details --- */
+        .node-details-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 100%;
+        }
+
+        .detail-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            background: #171717;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .meta-field {
+            font-size: 0.8rem;
+        }
+
+        .meta-title {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-value {
+            font-weight: 500;
+            color: #fff;
+            word-break: break-all;
+        }
+
+        .node-title-header {
+            font-size: 1.3rem;
+            color: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .node-body-container {
+            flex: 1;
+            background: #171717;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.25rem;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            white-space: normal;
+        }
+
+        /* --- Tables --- */
+        .table-container {
+            margin: 1rem 0;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        th {
+            background: #2f2f2f;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* --- Diffs --- */
+        .diff-viewer {
+            background: #171717;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .diff-title {
+            font-size: 0.9rem;
+            color: var(--warning-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 500;
+        }
+
+        .diff-line {
+            white-space: pre-wrap;
+            display: block;
+            padding: 0.1rem 0.5rem;
+            border-radius: 2px;
+        }
+
+        .diff-line.deletion {
+            background: rgba(239, 68, 68, 0.08);
+            color: #f87171;
+            border-left: 2px solid var(--danger-color);
+        }
+
+        .diff-line.addition {
+            background: rgba(16, 185, 129, 0.08);
+            color: #34d399;
+            border-left: 2px solid var(--success-color);
+        }
+
+        .diff-line.header {
+            color: #818cf8;
+            font-weight: 500;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            background: var(--primary-accent);
+            border: none;
+            color: #fff;
+            font-weight: 500;
+            font-size: 0.85rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--primary-accent-hover);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: #ececec;
+        }
+
+        .btn-secondary:hover {
+            background: #2f2f2f;
+            border-color: var(--border-color);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .actions-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        /* --- Selection Panel --- */
+        .selection-box {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .selection-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .selection-count {
+            font-size: 0.75rem;
+            color: var(--primary-accent);
+            font-weight: 600;
+        }
+
+        .pinned-nodes-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            max-height: 80px;
+            overflow-y: auto;
+            padding: 0.2rem;
+        }
+
+        .pinned-node-badge {
+            background: #2f2f2f;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.15rem 0.4rem;
+            font-size: 0.7rem;
+            color: #ececec;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .pinned-node-badge i {
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .pinned-node-badge i:hover {
+            color: var(--danger-color);
+        }
+
+        /* --- Selections List & QA panel --- */
+        .selections-dropdown-container {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .qa-card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .test-case-card {
+            background: #2f2f2f;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        .test-case-card.stale {
+            border-left: 3px solid var(--warning-color);
+        }
+
+        .test-case-card.orphaned {
+            border-left: 3px solid var(--danger-color);
+        }
+
+        .test-case-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .traceability-link {
+            font-size: 0.75rem;
+            color: var(--primary-accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-weight: 500;
+        }
+
+        .traceability-link:hover {
+            text-decoration: underline;
+        }
+
+        .badge {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .badge.valid {
+            background: var(--valid-bg);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 163, 127, 0.2);
+        }
+
+        .badge.stale {
+            background: var(--stale-bg);
+            color: var(--warning-color);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .badge.orphaned {
+            background: var(--orphaned-bg);
+            color: var(--danger-color);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .tc-field {
+            font-size: 0.85rem;
+        }
+
+        .tc-field-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-bottom: 0.15rem;
+        }
+
+        .tc-field-value {
+            color: var(--text-color);
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.6rem;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        .toggle-diff-btn {
+            font-size: 0.75rem;
+            color: var(--warning-color);
+            background: transparent;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: background-color 0.2s;
+        }
+
+        .toggle-diff-btn:hover {
+            background: var(--stale-bg);
+        }
+
+        /* --- Loading Overlay --- */
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(23, 23, 23, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+            border-radius: 8px;
+            z-index: 100;
+        }
+
+        .loading-spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #2f2f2f;
+            border-top-color: var(--primary-accent);
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- Modal Dialog --- */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal.visible {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--sidebar-bg);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .modal-body {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            background: #2f2f2f;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: #fff;
+            padding: 0.6rem 0.8rem;
+            outline: none;
+            font-size: 0.85rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-accent);
+        }
+
+        .modal-footer {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            background: var(--sidebar-bg);
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* --- Scrollbar styling --- */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            color: var(--text-muted);
+            gap: 0.5rem;
+            padding: 2rem;
+        }
+        .empty-state i {
+            font-size: 2.5rem;
+            color: var(--primary-accent);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Dashboard Header -->
+        <header>
+            <div class="brand-section">
+                <i class="fa-solid fa-file-waveform logo-icon"></i>
+                <div class="brand-title">
+                    <h1>CardioTrack CT-200</h1>
+                    <span>QA Documentation Pipeline</span>
+                </div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-val" id="stat-versions">2</div>
+                    <div class="stat-label">Versions Ingested</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val" id="stat-sections">29</div>
+                    <div class="stat-label">Active Sections</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val" id="stat-selections">0</div>
+                    <div class="stat-label">Pinned Selections</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val" id="stat-testcases">0</div>
+                    <div class="stat-label">Generated Tests</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Panel Grid -->
+        <div class="main-grid">
+            
+            <!-- Left Panel: Tree & Version Selection -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title"><i class="fa-solid fa-network-wired"></i> Document Tree</h2>
+                </div>
+                <div class="panel-body" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <div class="version-selector-container">
+                        <label class="stat-label" style="display: block; margin-bottom: 0.25rem;">Active Version</label>
+                        <select class="form-select" id="version-select">
+                            <!-- Loaded Dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" class="search-input" id="search-box" placeholder="Search headings or text...">
+                    </div>
+                    
+                    <div class="selection-box">
+                        <div class="selection-box-header">
+                            <span class="selection-count" id="selection-count">0 Nodes Selected</span>
+                            <button class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.25rem 0.5rem; height: auto;" id="clear-selection-btn">Clear</button>
+                        </div>
+                        <div class="pinned-nodes-list" id="pinned-nodes-list">
+                            <!-- Selected badges loaded dynamically -->
+                            <div style="color: var(--text-muted); font-size: 0.75rem; font-style: italic;">No sections selected yet. Check boxes below.</div>
+                        </div>
+                        <button class="btn" style="width: 100%; font-size: 0.8rem; padding: 0.4rem; margin-top: 0.5rem;" id="open-selection-modal-btn" disabled>
+                            <i class="fa-solid fa-thumbtack"></i> Pin Selection
+                        </button>
+                    </div>
+                    
+                    <div style="flex: 1; overflow-y: auto;">
+                        <ul class="tree-root" id="tree-container">
+                            <!-- Tree Nodes Loaded Dynamically -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Panel: Detail View & Comparison Diff -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title"><i class="fa-solid fa-file-lines"></i> Section Viewer</h2>
+                </div>
+                <div class="panel-body" id="detail-panel-body">
+                    <div class="empty-state">
+                        <i class="fa-solid fa-book-open"></i>
+                        <h3>No Section Selected</h3>
+                        <p>Click on any section in the Document Tree to view its contents, layout level, and cross-version diffs.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: QA Generation & Staleness Traceability -->
+            <div class="panel" style="position: relative;">
+                <div class="loading-overlay" id="loading-overlay">
+                    <div class="loading-spinner"></div>
+                    <span style="font-size: 0.9rem; color: var(--primary-accent); font-weight: 500;" id="loading-text">Generating Test Cases...</span>
+                </div>
+                
+                <div class="panel-header">
+                    <h2 class="panel-title"><i class="fa-solid fa-shield-halved"></i> Test Generator & Impact Analysis</h2>
+                </div>
+                
+                <div class="panel-body" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <label class="stat-label" style="display: block; margin-bottom: 0.25rem;">Active Selection</label>
+                        <div class="selections-dropdown-container">
+                            <select class="form-select" id="selections-select">
+                                <option value="">-- Select a pinned selection --</option>
+                            </select>
+                            <button class="btn" id="generate-btn" disabled><i class="fa-solid fa-wand-magic-sparkles"></i> Generate</button>
+                        </div>
+                        <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.5rem; margin-top: -0.25rem; font-size: 0.75rem;">
+                            <input type="checkbox" id="force-regenerate-checkbox" style="accent-color: var(--primary-accent);">
+                            <label for="force-regenerate-checkbox" style="color: var(--text-muted); cursor: pointer;">Bypass cache (Force LLM execution)</label>
+                        </div>
+                    </div>
+                    
+                    <div style="flex: 1; border-top: 1px solid var(--border-color); padding-top: 1rem; overflow-y: auto;">
+                        <h3 style="font-size: 0.9rem; color: #fff; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                            <span>QA Test Cases</span>
+                            <span class="badge valid" id="tc-count-badge" style="display: none;">0 Cases</span>
+                        </h3>
+                        <div class="qa-card-container" id="qa-cards-container">
+                            <div class="empty-state" style="padding-top: 3rem;">
+                                <i class="fa-solid fa-list-check"></i>
+                                <h3>No Test Cases Loaded</h3>
+                                <p>Select a pinned selection above and click "Generate" to generate/load QA test cases with real-time traceability checks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Pinned Selection Modal -->
+    <div class="modal" id="selection-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Pin Current Selection</h3>
+                <button class="modal-close" id="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="selection-name-input">Selection Name</label>
+                    <input type="text" class="form-control" id="selection-name-input" placeholder="e.g. Cuff Operations Specs, Safety Alarms">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Pinned Nodes Path</label>
+                    <div class="pinned-nodes-list" id="modal-nodes-list" style="max-height: 120px;">
+                        <!-- Node badges populated dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
+                <button class="btn" id="modal-save-btn">Pin Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Base URL
+        const API_URL = "";
+
+        // Global State
+        let versions = [];
+        let activeVersionId = null;
+        let activeVersionLabel = "";
+        let selectedNodeIds = new Set();
+        let selectedNodesMeta = [];
+        let currentDetailNodeId = null;
+
+        // DOM elements
+        const versionSelect = document.getElementById("version-select");
+        const searchBox = document.getElementById("search-box");
+        const treeContainer = document.getElementById("tree-container");
+        const detailPanelBody = document.getElementById("detail-panel-body");
+        const selectionCountText = document.getElementById("selection-count");
+        const pinnedNodesList = document.getElementById("pinned-nodes-list");
+        const openSelectionModalBtn = document.getElementById("open-selection-modal-btn");
+        const clearSelectionBtn = document.getElementById("clear-selection-btn");
+        
+        // Modal elements
+        const selectionModal = document.getElementById("selection-modal");
+        const modalCloseBtn = document.getElementById("modal-close-btn");
+        const modalCancelBtn = document.getElementById("modal-cancel-btn");
+        const modalSaveBtn = document.getElementById("modal-save-btn");
+        const selectionNameInput = document.getElementById("selection-name-input");
+        const modalNodesList = document.getElementById("modal-nodes-list");
+        
+        // Selections and QA elements
+        const selectionsSelect = document.getElementById("selections-select");
+        const generateBtn = document.getElementById("generate-btn");
+        const forceRegenerateCheckbox = document.getElementById("force-regenerate-checkbox");
+        const qaCardsContainer = document.getElementById("qa-cards-container");
+        const tcCountBadge = document.getElementById("tc-count-badge");
+        const loadingOverlay = document.getElementById("loading-overlay");
+        const loadingText = document.getElementById("loading-text");
+
+        // Stats elements
+        const statVersions = document.getElementById("stat-versions");
+        const statSections = document.getElementById("stat-sections");
+        const statSelections = document.getElementById("stat-selections");
+        const statTestcases = document.getElementById("stat-testcases");
+
+        // Helper: Convert Markdown Tables to HTML
+        function renderMarkdown(text) {
+            if (!text) return "";
+            
+            let html = text;
+            
+            // Match markdown tables: lines starting and ending with |
+            const tableRegex = /((?:\|[^\n]+\|\r?\n?)+)/g;
+            html = html.replace(tableRegex, function(match) {
+                const lines = match.trim().split('\n');
+                if (lines.length < 2) return match;
+                
+                let tableHtml = '<div class="table-container"><table>';
+                
+                // Header
+                const headers = lines[0].split('|').map(s => s.trim()).filter(s => s !== '');
+                tableHtml += '<thead><tr>';
+                headers.forEach(h => {
+                    tableHtml += `<th>${h}</th>`;
+                });
+                tableHtml += '</tr></thead>';
+                
+                // Body
+                tableHtml += '<tbody>';
+                // Skip separator line (lines[1])
+                for (let i = 2; i < lines.length; i++) {
+                    const cells = lines[i].split('|').map(s => s.trim()).filter((s, idx) => idx > 0 && idx < lines[i].split('|').length - 1);
+                    tableHtml += '<tr>';
+                    cells.forEach(c => {
+                        tableHtml += `<td>${c}</td>`;
+                    });
+                    tableHtml += '</tr>';
+                }
+                tableHtml += '</tbody></table></div>';
+                return tableHtml;
+            });
+            
+            // Replace newlines with <br> except inside tags
+            html = html.split('\n').map(line => {
+                if (line.trim().startsWith('<div') || line.trim().startsWith('<thead') || line.trim().startsWith('<tbody') || line.trim().startsWith('<tr') || line.trim().startsWith('<td') || line.trim().startsWith('<th') || line.trim().startsWith('</') || line.trim().startsWith('<table') || line.trim().startsWith('</table>') || line.trim().startsWith('</th>') || line.trim().startsWith('</td>') || line.trim().startsWith('</tr>') || line.trim().startsWith('</thead>') || line.trim().startsWith('</tbody>')) {
+                    return line;
+                }
+                return line + '<br>';
+            }).join('\n');
+            
+            return html;
+        }
+
+        // --- Fetch Initial Data ---
+        async function init() {
+            showLoading(true, "Loading Document Configuration...");
+            try {
+                // In a production setup, we can fetch documents.
+                // For this assignment, we query version label list.
+                // We'll query our top level API with v2 and v1 to check what versions exist.
+                // Let's assume v1 and v2 exist based on ingestion. We can fetch them.
+                versions = [
+                    { id: 1, label: "v1", name: "Version 1 (Initial Release)" },
+                    { id: 2, label: "v2", name: "Version 2 (Current Release)" }
+                ];
+                
+                // Fetch document details via FastAPI to discover actual active versions
+                // For simplicity, we hardcode selection but verify the database on endpoints
+                populateVersionsSelect();
+                await fetchTopLevelTree();
+                await fetchSelections();
+                updateStats();
+            } catch (err) {
+                console.error("Initialization error:", err);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function populateVersionsSelect() {
+            versionSelect.innerHTML = "";
+            // Sort versions descending so latest is default
+            versions.slice().reverse().forEach(v => {
+                const opt = document.createElement("option");
+                opt.value = v.label;
+                opt.textContent = `${v.label.toUpperCase()} - ${v.name}`;
+                if (v.label === "v2") opt.selected = true; // Default to v2
+                versionSelect.appendChild(opt);
+            });
+            
+            activeVersionLabel = versionSelect.value;
+            // Map label to version ID by querying DB
+        }
+
+        // --- Ingest and Stats Helper ---
+        async function updateStats() {
+            // Stats are populated by queries
+            try {
+                // Get all selections
+                const resSel = await fetch(`/api/selections/stats_stub`).catch(() => null);
+                // We'll update the counts dynamically based on loaded UI states
+            } catch (e) {}
+        }
+
+        // --- Load Tree ---
+        async function fetchTopLevelTree() {
+            const vLabel = versionSelect.value;
+            activeVersionLabel = vLabel;
+            
+            try {
+                const res = await fetch(`/api/nodes/top-level?version_label=${vLabel}`);
+                if (!res.ok) throw new Error("Failed to fetch tree");
+                const nodes = await res.json();
+                
+                // Clear selection states when changing version
+                clearSelection();
+                
+                // Sort top level numerically
+                try {
+                    nodes.sort((a, b) => {
+                        return parseInt(a.section_num) - parseInt(b.section_num);
+                    });
+                } catch(e) {}
+                
+                renderTree(nodes);
+            } catch (err) {
+                console.error("Error fetching tree:", err);
+            }
+        }
+
+        function renderTree(nodes) {
+            treeContainer.innerHTML = "";
+            nodes.forEach(node => {
+                const li = createTreeNodeElement(node);
+                treeContainer.appendChild(li);
+            });
+        }
+
+        function createTreeNodeElement(node) {
+            const li = document.createElement("li");
+            li.className = "tree-node";
+            li.dataset.nodeId = node.id;
+            li.dataset.pathKey = node.path_key;
+            li.dataset.sectionNum = node.section_num;
+            
+            // Build content container
+            const content = document.createElement("div");
+            content.className = "tree-node-content";
+            if (currentDetailNodeId === node.id) {
+                content.classList.add("active");
+            }
+            
+            // Expand button
+            const expandBtn = document.createElement("span");
+            expandBtn.className = "tree-node-expand-btn";
+            // Show carrot only if it's level 1 (or we know it has children)
+            // Level 2, 4 might have children too.
+            // For CT-200, Level 1 sections always have subsections (e.g. 1.1, 1.2)
+            if (node.level < 3) {
+                expandBtn.innerHTML = '<i class="fa-solid fa-caret-right"></i>';
+            } else {
+                expandBtn.innerHTML = '&bull;';
+                expandBtn.style.color = 'transparent'; // hidden spacer
+            }
+            
+            // Checkbox
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "tree-node-checkbox";
+            checkbox.checked = selectedNodeIds.has(node.id);
+            checkbox.addEventListener("click", (e) => {
+                e.stopPropagation();
+                toggleNodeSelection(node, checkbox.checked);
+            });
+            
+            // Label
+            const label = document.createElement("span");
+            label.className = "tree-node-label";
+            label.textContent = node.heading;
+            
+            content.appendChild(expandBtn);
+            content.appendChild(checkbox);
+            content.appendChild(label);
+            li.appendChild(content);
+            
+            // Child list container
+            const childrenUl = document.createElement("ul");
+            childrenUl.className = "tree-node-children";
+            li.appendChild(childrenUl);
+            
+            // Click handler to select and expand
+            content.addEventListener("click", async (e) => {
+                // Set active details
+                document.querySelectorAll(".tree-node-content").forEach(el => el.classList.remove("active"));
+                content.classList.add("active");
+                currentDetailNodeId = node.id;
+                
+                // Show node details
+                fetchNodeDetails(node.id);
+                
+                // Expand/Collapse
+                if (node.level < 3) {
+                    const isLoaded = childrenUl.dataset.loaded === "true";
+                    const isVisible = childrenUl.classList.contains("visible");
+                    
+                    if (!isLoaded) {
+                        showLoading(true, "Expanding Hierarchy...");
+                        try {
+                            const res = await fetch(`/api/nodes/${node.id}`);
+                            const detailNode = await res.json();
+                            childrenUl.innerHTML = "";
+                            
+                            detailNode.children.forEach(child => {
+                                const childLi = createTreeNodeElement(child);
+                                childrenUl.appendChild(childLi);
+                            });
+                            childrenUl.dataset.loaded = "true";
+                        } catch (err) {
+                            console.error(err);
+                        } finally {
+                            showLoading(false);
+                        }
+                    }
+                    
+                    if (isVisible) {
+                        childrenUl.classList.remove("visible");
+                        expandBtn.classList.remove("expanded");
+                    } else {
+                        childrenUl.classList.add("visible");
+                        expandBtn.classList.add("expanded");
+                    }
+                }
+            });
+            
+            return li;
+        }
+
+        // --- Search ---
+        let searchTimeout = null;
+        searchBox.addEventListener("input", () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performSearch, 400);
+        });
+
+        async function performSearch() {
+            const query = searchBox.value.trim();
+            if (!query) {
+                fetchTopLevelTree();
+                return;
+            }
+            
+            showLoading(true, "Searching Document...");
+            try {
+                const res = await fetch(`/api/nodes/search/filter?query=${encodeURIComponent(query)}&version_label=${activeVersionLabel}`);
+                if (!res.ok) throw new Error("Search failed");
+                const results = await res.json();
+                renderTree(results);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // --- Selection Handling ---
+        function toggleNodeSelection(node, isChecked) {
+            if (isChecked) {
+                selectedNodeIds.add(node.id);
+                selectedNodesMeta.push(node);
+            } else {
+                selectedNodeIds.delete(node.id);
+                selectedNodesMeta = selectedNodesMeta.filter(n => n.id !== node.id);
+            }
+            updateSelectionUI();
+        }
+
+        function clearSelection() {
+            selectedNodeIds.clear();
+            selectedNodesMeta = [];
+            document.querySelectorAll(".tree-node-checkbox").forEach(cb => cb.checked = false);
+            updateSelectionUI();
+        }
+
+        function updateSelectionUI() {
+            const count = selectedNodeIds.size;
+            selectionCountText.textContent = `${count} Node${count !== 1 ? 's' : ''} Selected`;
+            openSelectionModalBtn.disabled = count === 0;
+            
+            pinnedNodesList.innerHTML = "";
+            if (count === 0) {
+                pinnedNodesList.innerHTML = `<div style="color: var(--text-muted); font-size: 0.75rem; font-style: italic;">No sections selected yet. Check boxes below.</div>`;
+                return;
+            }
+            
+            selectedNodesMeta.forEach(node => {
+                const badge = document.createElement("div");
+                badge.className = "pinned-node-badge";
+                badge.innerHTML = `
+                    <span>${node.section_num}</span>
+                    <i class="fa-solid fa-circle-xmark"></i>
+                `;
+                badge.querySelector("i").addEventListener("click", () => {
+                    toggleNodeSelection(node, false);
+                    // Find actual checkbox in tree to uncheck
+                    const nodeLi = document.querySelector(`.tree-node[data-node-id="${node.id}"]`);
+                    if (nodeLi) {
+                        const cb = nodeLi.querySelector(".tree-node-checkbox");
+                        if (cb) cb.checked = false;
+                    }
+                });
+                pinnedNodesList.appendChild(badge);
+            });
+        }
+
+        clearSelectionBtn.addEventListener("click", clearSelection);
+
+        // --- Selection Modal ---
+        openSelectionModalBtn.addEventListener("click", () => {
+            selectionNameInput.value = "";
+            modalNodesList.innerHTML = "";
+            
+            selectedNodesMeta.forEach(node => {
+                const badge = document.createElement("div");
+                badge.className = "pinned-node-badge";
+                badge.textContent = `${node.section_num} ${node.heading.replace(node.section_num, '').trim()}`;
+                modalNodesList.appendChild(badge);
+            });
+            
+            selectionModal.classList.add("visible");
+        });
+
+        const closeModal = () => selectionModal.classList.remove("visible");
+        modalCloseBtn.addEventListener("click", closeModal);
+        modalCancelBtn.addEventListener("click", closeModal);
+
+        modalSaveBtn.addEventListener("click", async () => {
+            const name = selectionNameInput.value.trim();
+            if (!name) {
+                alert("Please enter a name for the selection.");
+                return;
+            }
+            
+            // Get active version ID.
+            // Since we need version ID (int) from the database:
+            // We find any selected node, and fetch its version_id
+            if (selectedNodesMeta.length === 0) return;
+            
+            showLoading(true, "Pinning Selection...");
+            try {
+                // Fetch the node details to read its version_id
+                const resNode = await fetch(`/api/nodes/${selectedNodesMeta[0].id}`);
+                const nodeDetails = await resNode.json();
+                
+                const payload = {
+                    name: name,
+                    version_id: nodeDetails.version_id,
+                    node_ids: Array.from(selectedNodeIds)
+                };
+                
+                const res = await fetch("/api/selections", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!res.ok) throw new Error("Failed to create selection");
+                const newSelection = await res.json();
+                
+                closeModal();
+                clearSelection();
+                await fetchSelections();
+                
+                // Select the newly created selection in the dropdown
+                selectionsSelect.value = newSelection.id;
+                selectionsSelect.dispatchEvent(new Event("change"));
+                
+            } catch (err) {
+                console.error(err);
+                alert("Error saving selection: " + err.message);
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        // --- Fetch Node Details ---
+        async function fetchNodeDetails(nodeId) {
+            detailPanelBody.innerHTML = `
+                <div style="display:flex; justify-content:center; align-items:center; height:100%;">
+                    <div class="loading-spinner"></div>
+                </div>
+            `;
+            
+            try {
+                const res = await fetch(`/api/nodes/${nodeId}`);
+                if (!res.ok) throw new Error("Failed to fetch details");
+                const node = await res.json();
+                
+                // Fetch diff for comparison
+                const diffRes = await fetch(`/api/nodes/${nodeId}/diff`);
+                let diffHtml = "";
+                if (diffRes.ok) {
+                    const diffData = await diffRes.json();
+                    if (diffData.has_changed) {
+                        diffHtml = `
+                            <div class="diff-viewer">
+                                <div class="diff-title">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    Wording Changed in Latest Version (${diffData.v2_version})
+                                </div>
+                                <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5rem; font-family:sans-serif;">
+                                    Unified Line Diff showing wording variations (Red = Removed, Green = Added)
+                                </div>
+                                ${renderDiffSummary(diffData.diff_summary)}
+                            </div>
+                        `;
+                    } else if (diffData.v1_version !== diffData.v2_version) {
+                        diffHtml = `
+                            <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius:8px; padding:0.75rem; font-size:0.8rem; color:var(--success-color); margin-top:1rem; display:flex; align-items:center; gap:0.5rem;">
+                                <i class="fa-solid fa-circle-check"></i>
+                                Content is identical in latest version (${diffData.v2_version})
+                            </div>
+                        `;
+                    }
+                }
+                
+                detailPanelBody.innerHTML = `
+                    <div class="node-details-container">
+                        <div class="node-title-header">${node.heading}</div>
+                        
+                        <div class="detail-meta-grid">
+                            <div class="meta-field">
+                                <div class="meta-title">Logical Path</div>
+                                <div class="meta-value">${node.path_key}</div>
+                            </div>
+                            <div class="meta-field">
+                                <div class="meta-title">Content Hash</div>
+                                <div class="meta-value" title="${node.content_hash}">${node.content_hash.slice(0, 12)}...</div>
+                            </div>
+                            <div class="meta-field">
+                                <div class="meta-title">Layout Level</div>
+                                <div class="meta-value">Level ${node.level}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="node-body-container">
+                            ${renderMarkdown(node.body_text)}
+                        </div>
+                        
+                        ${diffHtml}
+                    </div>
+                `;
+                
+            } catch (err) {
+                detailPanelBody.innerHTML = `
+                    <div style="color:var(--danger-color); padding: 2rem; text-align:center;">
+                        <i class="fa-solid fa-triangle-exclamation" style="font-size:2rem; margin-bottom:0.5rem;"></i>
+                        <p>Error loading section contents: ${err.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderDiffSummary(diffSummary) {
+            if (!diffSummary) return "";
+            
+            const lines = diffSummary.split('\n');
+            let html = '<div style="display:flex; flex-direction:column; gap:2px;">';
+            lines.forEach(line => {
+                let cls = "";
+                if (line.startsWith('-')) {
+                    cls = "deletion";
+                } else if (line.startsWith('+')) {
+                    cls = "addition";
+                } else if (line.startsWith('@@')) {
+                    cls = "header";
+                }
+                html += `<span class="diff-line ${cls}">${escapeHtml(line)}</span>`;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // --- Pinned Selections Dropdown ---
+        async function fetchSelections() {
+            try {
+                const res = await fetch("/api/selections");
+                if (!res.ok) throw new Error("Failed to fetch selections");
+                const selections = await res.json();
+                
+                // Populate selections dropdown
+                selectionsSelect.innerHTML = '<option value="">-- Select a pinned selection --</option>';
+                selections.forEach(sel => {
+                    const opt = document.createElement("option");
+                    opt.value = sel.id;
+                    opt.textContent = `${sel.name} (${sel.version_label.toUpperCase()})`;
+                    selectionsSelect.appendChild(opt);
+                });
+                
+                // Update selections stats in header
+                document.getElementById("stat-selections").textContent = selections.length;
+            } catch (e) {
+                console.error("Error fetching selections:", e);
+            }
+        }
+
+        // --- Fetch Dashboard Stats ---
+        async function fetchDashboardStats() {
+            try {
+                const res = await fetch("/api/selections/stats");
+                if (res.ok) {
+                    const stats = await res.json();
+                    document.getElementById("stat-versions").textContent = stats.versions_count;
+                    document.getElementById("stat-sections").textContent = stats.active_sections_count;
+                    document.getElementById("stat-selections").textContent = stats.selections_count;
+                    document.getElementById("stat-testcases").textContent = stats.test_cases_count;
+                }
+            } catch (e) {
+                console.error("Error loading stats:", e);
+            }
+        }
+
+        // Enable generate button on selection dropdown change
+        selectionsSelect.addEventListener("change", () => {
+            const hasSelection = selectionsSelect.value !== "";
+            generateBtn.disabled = !hasSelection;
+            if (hasSelection) {
+                loadTestCasesForSelection(selectionsSelect.value);
+            } else {
+                qaCardsContainer.innerHTML = `
+                    <div class="empty-state" style="padding-top: 3rem;">
+                        <i class="fa-solid fa-list-check"></i>
+                        <h3>No Test Cases Loaded</h3>
+                        <p>Select a pinned selection above and click "Generate" to generate/load QA test cases with real-time traceability checks.</p>
+                    </div>
+                `;
+                tcCountBadge.style.display = "none";
+            }
+        });
+
+        // Load existing test cases for a selection
+        async function loadTestCasesForSelection(selectionId) {
+            try {
+                const res = await fetch(`/api/test-cases?selection_id=${selectionId}`);
+                if (!res.ok) throw new Error("Failed to fetch test cases");
+                const testCases = await res.json();
+                renderTestCases(testCases);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // Render Test Cases cards
+        function renderTestCases(testCases) {
+            qaCardsContainer.innerHTML = "";
+            
+            if (testCases.length === 0) {
+                qaCardsContainer.innerHTML = `
+                    <div class="empty-state" style="padding-top: 3rem;">
+                        <i class="fa-solid fa-face-meh"></i>
+                        <h3>No Test Cases Yet</h3>
+                        <p>No test cases are generated yet for this selection. Click "Generate" to construct them using the LLM engine.</p>
+                    </div>
+                `;
+                tcCountBadge.style.display = "none";
+                return;
+            }
+            
+            tcCountBadge.textContent = `${testCases.length} Cases`;
+            tcCountBadge.style.display = "inline-block";
+            
+            // Update stats bar count
+            document.getElementById("stat-testcases").textContent = testCases.length;
+            
+            testCases.forEach((tc, idx) => {
+                const card = document.createElement("div");
+                card.className = `test-case-card ${tc.staleness_status}`;
+                
+                // Construct badge class and label
+                let badgeClass = "valid";
+                let badgeText = "Valid (Up-to-date)";
+                
+                if (tc.staleness_status === "stale") {
+                    badgeClass = "stale";
+                    badgeText = "Stale (Manual changed)";
+                } else if (tc.staleness_status === "orphaned") {
+                    badgeClass = "orphaned";
+                    badgeText = "Orphaned (Deleted)";
+                }
+                
+                let diffToggleHtml = "";
+                let diffBlockHtml = "";
+                
+                if (tc.staleness_status === "stale" && tc.diff_summary) {
+                    diffToggleHtml = `
+                        <button class="toggle-diff-btn" id="btn-diff-${tc.id}">
+                            <i class="fa-solid fa-code-compare"></i> Show Manual Changes
+                        </button>
+                    `;
+                    
+                    diffBlockHtml = `
+                        <div class="diff-viewer" id="diff-block-${tc.id}" style="display: none; margin-top: 0.5rem; border-color: rgba(245, 158, 11, 0.2);">
+                            <div style="font-size: 0.7rem; color: var(--warning-color); margin-bottom: 0.25rem; font-family: sans-serif;">
+                                Wording changes made in the manual since test generation:
+                            </div>
+                            ${renderDiffSummary(tc.diff_summary)}
+                        </div>
+                    `;
+                }
+                
+                card.innerHTML = `
+                    <div class="test-case-card-header">
+                        <a href="#" class="traceability-link" data-path="${tc.target_node_path_key}">
+                            <i class="fa-solid fa-link"></i> ${tc.target_node_path_key}
+                        </a>
+                        <span class="badge ${badgeClass}">${badgeText}</span>
+                    </div>
+                    
+                    <div class="tc-field">
+                        <div class="tc-field-label">Test Case Steps</div>
+                        <div class="tc-field-value" style="white-space: pre-wrap;">${escapeHtml(tc.steps)}</div>
+                    </div>
+                    
+                    <div class="tc-field">
+                        <div class="tc-field-label">Expected Result</div>
+                        <div class="tc-field-value" style="white-space: pre-wrap;">${escapeHtml(tc.expected_result)}</div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.25rem;">
+                        <span style="font-size: 0.7rem; color: var(--text-muted);">Original Hash: <code>${tc.original_node_hash.slice(0, 8)}</code></span>
+                        ${diffToggleHtml}
+                    </div>
+                    ${diffBlockHtml}
+                `;
+                
+                // Bind toggle diff btn
+                if (tc.staleness_status === "stale" && tc.diff_summary) {
+                    card.querySelector(`#btn-diff-${tc.id}`).addEventListener("click", () => {
+                        const block = card.querySelector(`#diff-block-${tc.id}`);
+                        const btn = card.querySelector(`#btn-diff-${tc.id}`);
+                        if (block.style.display === "none") {
+                            block.style.display = "block";
+                            btn.innerHTML = `<i class="fa-solid fa-code-compare"></i> Hide Manual Changes`;
+                        } else {
+                            block.style.display = "none";
+                            btn.innerHTML = `<i class="fa-solid fa-code-compare"></i> Show Manual Changes`;
+                        }
+                    });
+                }
+                
+                // Bind traceability link to highlight node in tree & viewer
+                card.querySelector(".traceability-link").addEventListener("click", (e) => {
+                    e.preventDefault();
+                    highlightAndOpenNodeByPath(tc.target_node_path_key);
+                });
+                
+                qaCardsContainer.appendChild(card);
+            });
+        }
+
+        async function highlightAndOpenNodeByPath(pathKey) {
+            // Find in database and open
+            try {
+                // Find node by path key in active version
+                const res = await fetch(`/api/nodes/search/filter?query=${encodeURIComponent(pathKey)}&version_label=${activeVersionLabel}`);
+                if (res.ok) {
+                    const results = await res.json();
+                    const match = results.find(n => n.path_key === pathKey);
+                    if (match) {
+                        currentDetailNodeId = match.id;
+                        fetchNodeDetails(match.id);
+                        
+                        // Highlight in Tree DOM if visible
+                        document.querySelectorAll(".tree-node-content").forEach(el => el.classList.remove("active"));
+                        const targetLi = document.querySelector(`.tree-node[data-path-key="${pathKey}"]`);
+                        if (targetLi) {
+                            const content = targetLi.querySelector(".tree-node-content");
+                            if (content) content.classList.add("active");
+                            targetLi.scrollIntoView({ behavior: "smooth", block: "center" });
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // --- Generate QA Test Cases Trigger ---
+        generateBtn.addEventListener("click", async () => {
+            const selectionId = selectionsSelect.value;
+            if (!selectionId) return;
+            
+            const force = forceRegenerateCheckbox.checked;
+            
+            showLoading(true, force ? "Running LLM Engine (Force Mode)..." : "Generating Test Cases (Cached Mode)...");
+            
+            try {
+                const res = await fetch(`/api/selections/${selectionId}/generate-tests?force_regenerate=${force}`, {
+                    method: "POST"
+                });
+                
+                if (!res.ok) throw new Error("Failed to generate test cases");
+                const genResponse = await res.json();
+                
+                renderTestCases(genResponse.test_cases);
+                await fetchDashboardStats();
+                
+            } catch (err) {
+                alert("Generation error: " + err.message);
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        // Version Selector change
+        versionSelect.addEventListener("change", async () => {
+            await fetchTopLevelTree();
+            await fetchDashboardStats();
+        });
+
+        // Loading Overlay Helper
+        function showLoading(show, message = "Loading...") {
+            if (show) {
+                loadingText.textContent = message;
+                loadingOverlay.style.display = "flex";
+            } else {
+                loadingOverlay.style.display = "none";
+            }
+        }
+
+        // Start App
+        init();
+        fetchDashboardStats();
+    </script>
+</body>
+</html>

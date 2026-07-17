@@ -1,0 +1,462 @@
+{
+  "e39e30d7-3432-4965-be3d-4e8dcf04eb2f": {
+    "id": "e39e30d7-3432-4965-be3d-4e8dcf04eb2f",
+    "selection_id": "aae9573e-4978-4741-af48-0588f208f5b8",
+    "selection_name": "E2E Integration Test Selection",
+    "document_version": "v1",
+    "nodes_context": [
+      {
+        "node_id": 7,
+        "path_key": "/2/1/1/1",
+        "heading": "2.1.1.1 Battery Life Under Typical Use",
+        "body_text": "Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles before\nrequiring replacement. The device displays a low‑battery icon once\nremaining capacity falls below 15%.",
+        "content_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "node_id": 19,
+        "path_key": "/5/1",
+        "heading": "5.1 Local Storage",
+        "body_text": "The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading for that proﬁle is\noverwritten automatically; there is no user‑facing warning before this\noccurs.",
+        "content_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      }
+    ],
+    "test_cases": [
+      {
+        "id": "7b2eca99",
+        "steps": "Verify compliance and correctness of specs described in: 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "Device behavior matches section details: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles ...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "id": "e227f87d",
+        "steps": "Verify compliance and correctness of specs described in: 5.1 Local Storage.",
+        "expected_result": "Device behavior matches section details: The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading fo...",
+        "target_node_path_key": "/5/1",
+        "original_node_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      },
+      {
+        "id": "506f07d0",
+        "steps": "Verify device operation conforms to section 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "The physical output matches text: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      }
+    ],
+    "created_at": "2026-07-17T06:42:55.500558"
+  },
+  "bb128ad8-7274-4631-88cd-5454c700fddf": {
+    "id": "bb128ad8-7274-4631-88cd-5454c700fddf",
+    "selection_id": "8048a248-560d-4401-8f57-00baa80e63d8",
+    "selection_name": "E2E Integration Test Selection",
+    "document_version": "v1",
+    "nodes_context": [
+      {
+        "node_id": 7,
+        "path_key": "/2/1/1/1",
+        "heading": "2.1.1.1 Battery Life Under Typical Use",
+        "body_text": "Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles before\nrequiring replacement. The device displays a low‑battery icon once\nremaining capacity falls below 15%.",
+        "content_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "node_id": 19,
+        "path_key": "/5/1",
+        "heading": "5.1 Local Storage",
+        "body_text": "The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading for that proﬁle is\noverwritten automatically; there is no user‑facing warning before this\noccurs.",
+        "content_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      }
+    ],
+    "test_cases": [
+      {
+        "id": "9c470766",
+        "steps": "Verify compliance and correctness of specs described in: 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "Device behavior matches section details: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles ...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "id": "619b3be6",
+        "steps": "Verify compliance and correctness of specs described in: 5.1 Local Storage.",
+        "expected_result": "Device behavior matches section details: The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading fo...",
+        "target_node_path_key": "/5/1",
+        "original_node_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      },
+      {
+        "id": "ff4c4284",
+        "steps": "Verify device operation conforms to section 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "The physical output matches text: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      }
+    ],
+    "created_at": "2026-07-17T06:43:04.888256"
+  },
+  "c679d7e2-0943-4eb3-a0bc-44c5f7f6b768": {
+    "id": "c679d7e2-0943-4eb3-a0bc-44c5f7f6b768",
+    "selection_id": "0648ea99-ad01-4eaf-96f5-7d4121c07aa6",
+    "selection_name": "E2E Integration Test Selection",
+    "document_version": "v1",
+    "nodes_context": [
+      {
+        "node_id": 7,
+        "path_key": "/2/1/1/1",
+        "heading": "2.1.1.1 Battery Life Under Typical Use",
+        "body_text": "Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles before\nrequiring replacement. The device displays a low‑battery icon once\nremaining capacity falls below 15%.",
+        "content_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "node_id": 19,
+        "path_key": "/5/1",
+        "heading": "5.1 Local Storage",
+        "body_text": "The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading for that proﬁle is\noverwritten automatically; there is no user‑facing warning before this\noccurs.",
+        "content_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      }
+    ],
+    "test_cases": [
+      {
+        "id": "c2040cad",
+        "steps": "Verify compliance and correctness of specs described in: 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "Device behavior matches section details: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles ...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "id": "3c8ec1f8",
+        "steps": "Verify compliance and correctness of specs described in: 5.1 Local Storage.",
+        "expected_result": "Device behavior matches section details: The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading fo...",
+        "target_node_path_key": "/5/1",
+        "original_node_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      },
+      {
+        "id": "125ca8c5",
+        "steps": "Verify device operation conforms to section 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "The physical output matches text: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      }
+    ],
+    "created_at": "2026-07-17T06:44:08.853428"
+  },
+  "8016d074-d5d7-488d-8f41-bd110e01e984": {
+    "id": "8016d074-d5d7-488d-8f41-bd110e01e984",
+    "selection_id": "af692ccc-68d1-4dab-be4a-c50b41172b53",
+    "selection_name": "V1 Core Battery & Storage",
+    "document_version": "v1",
+    "nodes_context": [
+      {
+        "node_id": 7,
+        "path_key": "/2/1/1/1",
+        "heading": "2.1.1.1 Battery Life Under Typical Use",
+        "body_text": "Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles before\nrequiring replacement. The device displays a low‑battery icon once\nremaining capacity falls below 15%.",
+        "content_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "node_id": 19,
+        "path_key": "/5/1",
+        "heading": "5.1 Local Storage",
+        "body_text": "The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading for that proﬁle is\noverwritten automatically; there is no user‑facing warning before this\noccurs.",
+        "content_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      }
+    ],
+    "test_cases": [
+      {
+        "id": "a056fe51",
+        "steps": "Verify compliance and correctness of specs described in: 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "Device behavior matches section details: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles ...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "id": "70052a81",
+        "steps": "Verify compliance and correctness of specs described in: 5.1 Local Storage.",
+        "expected_result": "Device behavior matches section details: The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading fo...",
+        "target_node_path_key": "/5/1",
+        "original_node_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      },
+      {
+        "id": "112caf94",
+        "steps": "Verify device operation conforms to section 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "The physical output matches text: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      }
+    ],
+    "created_at": "2026-07-17T07:17:39.885986"
+  },
+  "c78da597-fa49-4414-b00d-0a624f288b80": {
+    "id": "c78da597-fa49-4414-b00d-0a624f288b80",
+    "selection_id": "75c11204-0c75-4368-8f44-de28dfe164cb",
+    "selection_name": "E2E Integration Test Selection",
+    "document_version": "v1",
+    "nodes_context": [
+      {
+        "node_id": 7,
+        "path_key": "/2/1/1/1",
+        "heading": "2.1.1.1 Battery Life Under Typical Use",
+        "body_text": "Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles before\nrequiring replacement. The device displays a low‑battery icon once\nremaining capacity falls below 15%.",
+        "content_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "node_id": 19,
+        "path_key": "/5/1",
+        "heading": "5.1 Local Storage",
+        "body_text": "The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading for that proﬁle is\noverwritten automatically; there is no user‑facing warning before this\noccurs.",
+        "content_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      }
+    ],
+    "test_cases": [
+      {
+        "id": "8be8b07b",
+        "steps": "Verify compliance and correctness of specs described in: 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "Device behavior matches section details: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles ...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "id": "0dcd87cc",
+        "steps": "Verify compliance and correctness of specs described in: 5.1 Local Storage.",
+        "expected_result": "Device behavior matches section details: The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading fo...",
+        "target_node_path_key": "/5/1",
+        "original_node_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      },
+      {
+        "id": "2fc9dfa0",
+        "steps": "Verify device operation conforms to section 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "The physical output matches text: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      }
+    ],
+    "created_at": "2026-07-17T07:23:44.666716"
+  },
+  "879501b6-9379-4798-b267-ec949d1db274": {
+    "id": "879501b6-9379-4798-b267-ec949d1db274",
+    "selection_id": "dd7fced2-a7ee-4b78-a2a4-c5ea7333c710",
+    "selection_name": "Battery and Storage Specs",
+    "document_version": "v2",
+    "nodes_context": [
+      {
+        "node_id": 35,
+        "path_key": "/2/1/1/1",
+        "heading": "2.1.1.1 Battery Life Under Typical Use",
+        "body_text": "Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 250 measurement cycles before\nrequiring replacement — revised downward from earlier estimates after\nextended ﬁeld testing. The device displays a low‑battery icon once\nremaining capacity falls below 10%.",
+        "content_hash": "bda978384c3aba179a4c42b7f82e7b12c60723162c8f7c0a3ce1b6caf3065f65"
+      },
+      {
+        "node_id": 47,
+        "path_key": "/5/1",
+        "heading": "5.1 Local Storage",
+        "body_text": "The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading for that proﬁle is\noverwritten automatically; there is no user‑facing warning before this\noccurs.",
+        "content_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      }
+    ],
+    "test_cases": [
+      {
+        "id": "446292e1",
+        "steps": "Verify compliance and correctness of specs described in: 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "Device behavior matches section details: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 250 measurement cycles ...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "bda978384c3aba179a4c42b7f82e7b12c60723162c8f7c0a3ce1b6caf3065f65"
+      },
+      {
+        "id": "0a5cfea4",
+        "steps": "Verify compliance and correctness of specs described in: 5.1 Local Storage.",
+        "expected_result": "Device behavior matches section details: The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading fo...",
+        "target_node_path_key": "/5/1",
+        "original_node_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      },
+      {
+        "id": "bbb4f829",
+        "steps": "Verify device operation conforms to section 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "The physical output matches text: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 250...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "bda978384c3aba179a4c42b7f82e7b12c60723162c8f7c0a3ce1b6caf3065f65"
+      }
+    ],
+    "created_at": "2026-07-17T07:31:05.109555"
+  },
+  "53f975ab-275a-4fb3-b522-096e7954a25e": {
+    "id": "53f975ab-275a-4fb3-b522-096e7954a25e",
+    "selection_id": "655a44cb-d7bf-431f-b8e2-28d0231e4e81",
+    "selection_name": "E2E Integration Test Selection",
+    "document_version": "v1",
+    "nodes_context": [
+      {
+        "node_id": 7,
+        "path_key": "/2/1/1/1",
+        "heading": "2.1.1.1 Battery Life Under Typical Use",
+        "body_text": "Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles before\nrequiring replacement. The device displays a low‑battery icon once\nremaining capacity falls below 15%.",
+        "content_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "node_id": 19,
+        "path_key": "/5/1",
+        "heading": "5.1 Local Storage",
+        "body_text": "The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading for that proﬁle is\noverwritten automatically; there is no user‑facing warning before this\noccurs.",
+        "content_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      }
+    ],
+    "test_cases": [
+      {
+        "id": "93af8f61",
+        "steps": "Verify compliance and correctness of specs described in: 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "Device behavior matches section details: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles ...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "id": "f7965a60",
+        "steps": "Verify compliance and correctness of specs described in: 5.1 Local Storage.",
+        "expected_result": "Device behavior matches section details: The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading fo...",
+        "target_node_path_key": "/5/1",
+        "original_node_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      },
+      {
+        "id": "5bbb80a6",
+        "steps": "Verify device operation conforms to section 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "The physical output matches text: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      }
+    ],
+    "created_at": "2026-07-17T07:32:22.888511"
+  },
+  "d24381e8-8749-4cae-bf12-31858937f5d6": {
+    "id": "d24381e8-8749-4cae-bf12-31858937f5d6",
+    "selection_id": "2c908fb8-c1e6-4e90-b98e-c1be77ed6186",
+    "selection_name": "Test",
+    "document_version": "v1",
+    "nodes_context": [
+      {
+        "node_id": 1,
+        "path_key": "/0",
+        "heading": "CardioTrack CT-200 Technical & User Manual",
+        "body_text": "CardioTrack CT-200 Home Blood\nPressure Monitor — Technical &\nUser Manual",
+        "content_hash": "0423783fcbd0fecb5a3842b736f6c0416ab686f9ffde1b110f83c7c1c08317ca"
+      },
+      {
+        "node_id": 2,
+        "path_key": "/1",
+        "heading": "1 Device Overview",
+        "body_text": "The CardioTrack CT-200 is an oscillometric, upper-arm blood pressure\nmonitor intended for home use by adult users. It measures systolic\npressure, diastolic pressure, and pulse rate, and stores up to 200\nreadings across two user proﬁles.",
+        "content_hash": "a21146fde71bcff4646afe65ad97baa7264d1bad402d970081833d1f81a3cb56"
+      }
+    ],
+    "test_cases": [
+      {
+        "id": "b42353ed",
+        "steps": "Verify compliance and correctness of specs described in: CardioTrack CT-200 Technical & User Manual.",
+        "expected_result": "Device behavior matches section details: CardioTrack CT-200 Home Blood\nPressure Monitor — Technical &\nUser Manual...",
+        "target_node_path_key": "/0",
+        "original_node_hash": "0423783fcbd0fecb5a3842b736f6c0416ab686f9ffde1b110f83c7c1c08317ca"
+      },
+      {
+        "id": "97d07be8",
+        "steps": "Verify compliance and correctness of specs described in: 1 Device Overview.",
+        "expected_result": "Device behavior matches section details: The CardioTrack CT-200 is an oscillometric, upper-arm blood pressure\nmonitor intended for home use by adult users. It me...",
+        "target_node_path_key": "/1",
+        "original_node_hash": "a21146fde71bcff4646afe65ad97baa7264d1bad402d970081833d1f81a3cb56"
+      },
+      {
+        "id": "724f4f00",
+        "steps": "Verify device operation conforms to section CardioTrack CT-200 Technical & User Manual.",
+        "expected_result": "The physical output matches text: CardioTrack CT-200 Home Blood\nPressure Monitor — Technical &\nUser Manual...",
+        "target_node_path_key": "/0",
+        "original_node_hash": "0423783fcbd0fecb5a3842b736f6c0416ab686f9ffde1b110f83c7c1c08317ca"
+      }
+    ],
+    "created_at": "2026-07-17T07:57:58.115457"
+  },
+  "2081538a-63a3-4c1d-91e4-572e82e7f7d9": {
+    "id": "2081538a-63a3-4c1d-91e4-572e82e7f7d9",
+    "selection_id": "b5c177e0-245c-413f-84b3-3c1b66c4d60a",
+    "selection_name": "E2E Integration Test Selection",
+    "document_version": "v1",
+    "nodes_context": [
+      {
+        "node_id": 7,
+        "path_key": "/2/1/1/1",
+        "heading": "2.1.1.1 Battery Life Under Typical Use",
+        "body_text": "Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles before\nrequiring replacement. The device displays a low‑battery icon once\nremaining capacity falls below 15%.",
+        "content_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "node_id": 19,
+        "path_key": "/5/1",
+        "heading": "5.1 Local Storage",
+        "body_text": "The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading for that proﬁle is\noverwritten automatically; there is no user‑facing warning before this\noccurs.",
+        "content_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      }
+    ],
+    "test_cases": [
+      {
+        "id": "17a21def",
+        "steps": "Verify compliance and correctness of specs described in: 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "Device behavior matches section details: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles ...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "id": "02de2648",
+        "steps": "Verify compliance and correctness of specs described in: 5.1 Local Storage.",
+        "expected_result": "Device behavior matches section details: The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading fo...",
+        "target_node_path_key": "/5/1",
+        "original_node_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      },
+      {
+        "id": "fb1ab463",
+        "steps": "Verify device operation conforms to section 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "The physical output matches text: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      }
+    ],
+    "created_at": "2026-07-17T08:22:09.645027"
+  },
+  "b832ff71-4848-4ded-b7a8-0ed031186a20": {
+    "id": "b832ff71-4848-4ded-b7a8-0ed031186a20",
+    "selection_id": "daa6ef26-57f9-41c8-961f-e6be55850030",
+    "selection_name": "E2E Integration Test Selection",
+    "document_version": "v1",
+    "nodes_context": [
+      {
+        "node_id": 7,
+        "path_key": "/2/1/1/1",
+        "heading": "2.1.1.1 Battery Life Under Typical Use",
+        "body_text": "Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles before\nrequiring replacement. The device displays a low‑battery icon once\nremaining capacity falls below 15%.",
+        "content_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "node_id": 19,
+        "path_key": "/5/1",
+        "heading": "5.1 Local Storage",
+        "body_text": "The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading for that proﬁle is\noverwritten automatically; there is no user‑facing warning before this\noccurs.",
+        "content_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      }
+    ],
+    "test_cases": [
+      {
+        "id": "75626e32",
+        "steps": "Verify compliance and correctness of specs described in: 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "Device behavior matches section details: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300 measurement cycles ...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      },
+      {
+        "id": "aaa7e846",
+        "steps": "Verify compliance and correctness of specs described in: 5.1 Local Storage.",
+        "expected_result": "Device behavior matches section details: The CT‑200 stores up to 100 readings per user proﬁle in non‑volatile\nmemory. When storage is full, the oldest reading fo...",
+        "target_node_path_key": "/5/1",
+        "original_node_hash": "0b14cb08282e5423aebd51255fb9c16e1003cd3906f9ce5c7be812d2be9ead37"
+      },
+      {
+        "id": "3427c0eb",
+        "steps": "Verify device operation conforms to section 2.1.1.1 Battery Life Under Typical Use.",
+        "expected_result": "The physical output matches text: Under typical use (three measurements per day), four AA alkaline\nbatteries provide approximately 300...",
+        "target_node_path_key": "/2/1/1/1",
+        "original_node_hash": "1cbd5828a5e609cb44a1b35773ebba59547033220174b7a562a0d2ecbec6cb2c"
+      }
+    ],
+    "created_at": "2026-07-17T08:23:02.880729"
+  }
+}

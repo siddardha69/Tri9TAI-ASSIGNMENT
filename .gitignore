@@ -1,0 +1,33 @@
+# Virtual Environments
+venv/
+.venv/
+ENV/
+env/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Database Files
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# PDF documents (As requested, don't push PDFs)
+*.pdf
+*_extracted.txt
+*_parsed.json
+
+# Local Configuration / Keys
+.env
+.env.*
+
+# OS specific files
+.DS_Store
+Thumbs.db
