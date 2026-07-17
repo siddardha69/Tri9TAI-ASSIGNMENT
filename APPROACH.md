@@ -103,7 +103,18 @@ We implemented strict validation:
 
 ## 5. What We'd Do Differently with More Time
 
-1. **Database Migration Pipeline:** Integrate `alembic` to manage database version schemas.
-2. **Dynamic Cross-Version Mapping:** Implement semantic sentence similarity checking (e.g., cosine similarity) to identify if a section was renumbered (e.g., `/2/1` to `/2/2`) rather than deleted.
-3. **OAuth2 User Auth:** Secure endpoints using FastAPI's security scopes and JWT tokens.
-4. **Export Engine:** Add options to download generated QA matrices directly as Excel spreadsheets or PDF compliance documents.
+---
+
+## 6. Decision Log (Mandatory Task 12)
+
+### Q1: Which part of your system is most likely to silently produce incorrect results? How would you detect it?
+*   **Silent Failure Point:** The **PDF Hierarchy Parser**. If a manual contains sections numbered non-standardly (e.g. `"Section A-1"` or roman numerals `"IV. Specifications"`), the header regex (`HEADING_REGEX`) will fail to identify them. These sections will silently be merged into the body text of the preceding section, causing incorrect logical grouping.
+*   **How to Detect It:** We can run an **extraction integrity check** after parsing: calculate the total text character count extracted from the PDF pages, and compare it against the sum of the text lengths of all parsed nodes. A mismatch greater than a threshold (e.g., 5%) indicates that text was incorrectly grouped or skipped.
+
+### Q2: Where did you simplify the implementation due to time constraints, and what would likely fail first in production?
+*   **Simplification:** We implemented the NoSQL document store using a local, file-based JSON store (`data/nosql_store.json`) with an in-memory lock instead of a containerized MongoDB or cloud-based PostgreSQL instance.
+*   **Production Failure Point:** Under high concurrency (multiple QA engineers pinning selections and generating test cases simultaneously), the file-based JSON store will become a write-bottleneck. File lock contentions or raw read/write race conditions could result in data corruption or slow request timeouts. 
+
+### Q3: Name one type of input your parser, version matcher, or LLM handling does not support, and explain how your system behaves when it encounters it.
+*   **Unsupported Input Type:** **Scanned PDF manuals (pure image PDFs)**.
+*   **System Behavior:** Our parser uses character-coordinate mapping through `pdfplumber` to extract text and tables. If a manual is a scanned image with no embedded text layer, `pdfplumber` will return empty text blocks. The system will fail to extract any nodes, resulting in an empty database hierarchy and log warnings. To support this, an OCR pre-processing layer (such as `pytesseract` or `easyocr`) would be required.
